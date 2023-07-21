@@ -4,8 +4,14 @@
 typedef struct Nodo *link;
 struct Nodo {
     int dato;
+    link prec;
     link next;
 };
+
+link getLast(link head){
+    if (head->next == NULL) return head;
+    else return getLast(head->next);
+}
 
 void stampaLista(link head){
     if(head == NULL){
@@ -16,44 +22,69 @@ void stampaLista(link head){
     stampaLista(head->next);
 }
 
+void stampaReverseREC(link tail){
+    if(tail == NULL){
+        printf("NULL \n");
+        return;
+    }
+    printf("%d -> ", tail->dato);
+    stampaLista(tail->prec);
+}
+
+void stampaReverse(link head){
+    stampaReverseREC(getLast(head));
+}
+
 link newNodo(){
     link new = (link) malloc(sizeof(struct Nodo));
     printf("Inserisci il valore: ");
     scanf("%d", &new->dato);
+    new->prec = NULL;
     new->next = NULL;
     return new;
-}
-
-link getLast(link head){
-    if (head->next == NULL) return head;
-    else return getLast(head->next);
 }
 
 void insTesta(link *head){
     link new = newNodo();
     new->next = *head;
+    new->prec = NULL;
     *head = new;
 }
 
 void insCoda(link *head){
     link new = newNodo();
     if(*head == NULL) *head = new;
-    else getLast(*head)->next = new;
+    else {
+        link last = getLast(*head);
+        last->next = new;
+        new->prec = last;
+    }
 }
 
-void insIndice(link *head, int i){
-    if (i < 0) return;
+void insIndice(link *head, int n){
+    if(!head || !*head || n < 1) return;
+    if (n == 1 || ((*head)->next == NULL && n == 2)){
+        insTesta(head);
+        return;
+    }
+    insIndice(&(*head)->next, n-1);
+}
 
-} //DA FINIRE
+void elTesta(link *head){
+    link tmp = *head;
+    *head = (*head)->next;
+    free(tmp);
+}
 
-
+void elCoda(link *head){
+    if ((*head)->next == NULL) elTesta(head);
+    else elCoda(&(*head)->next);
+}
 
 void elIndice(link *head, int n){
-    if(!head || !*head || n < 1) return;
+    if(!head || !*head || n < 1 || (*head)->next == NULL && n > 1) return;
     if (n == 1){
-        link temp = *head;
-        *head = (*head)->next;
-        free(temp);
+        elTesta(head);
         return;
     }
     elIndice(&(*head)->next, n-1);
@@ -117,6 +148,18 @@ void sceltaM(link *head, int val) {
             elIndice(head, indice);
             printf("Elemento eliminato nella posizione %d.\n", indice);
             break;
+        case 8:
+            elTesta(head);
+            printf("Elemento in testa eliminato");
+            break;
+        case 9:
+            elCoda(head);
+            printf("Elemento in coda eliminato");
+            break;
+        case 10:
+            printf("Lista al contrario:\n");
+            stampaReverse(*head);
+            break;
         case 0:
             exit(0);
             break;
@@ -131,7 +174,6 @@ void sceltaM(link *head, int val) {
     }
 }
 
-
 void menu(link *head){
     int val;
     printf("\n-- Menù delle operazioni --\n");
@@ -142,6 +184,9 @@ void menu(link *head){
     printf("5. Stampa la lista\n");
     printf("6. Elimina la lista\n");
     printf("7. Elimina un elemento nel mezzo della lista\n");
+    printf("8. Elimina elmento in testa\n");
+    printf("9. Elimina elmento in coda\n");
+    printf("10. Stampa la lista al contrario\n");
     printf("0. Esci\n");
     printf("---------------------------\n");
     printf("Scelta: ");
@@ -154,7 +199,7 @@ void menu(link *head){
 
 
 int main(){
-    link head=NULL;
+    link head = NULL;
 
     while(1) menu(&head);
 }
