@@ -28,15 +28,17 @@ void stampaReverseREC(link tail){
         return;
     }
     printf("%d -> ", tail->dato);
-    stampaLista(tail->prec);
+    stampaReverseREC(tail->prec);
 }
 
 void stampaReverse(link head){
-    stampaReverseREC(getLast(head));
+    link tail = getLast(head);
+    stampaReverseREC(tail);
 }
 
 link newNodo(){
     link new = (link) malloc(sizeof(struct Nodo));
+    if(!new) exit(EXIT_FAILURE);
     printf("Inserisci il valore: ");
     scanf("%d", &new->dato);
     new->prec = NULL;
@@ -47,18 +49,23 @@ link newNodo(){
 void insTesta(link *head){
     link new = newNodo();
     new->next = *head;
-    new->prec = NULL;
+    if (*head != NULL) {
+        new->prec = (*head)->prec;
+        (*head)->prec = new;
+    }
     *head = new;
 }
 
 void insCoda(link *head){
-    link new = newNodo();
-    if(*head == NULL) *head = new;
-    else {
-        link last = getLast(*head);
-        last->next = new;
-        new->prec = last;
+    if(*head == NULL) {
+        insTesta(head);
+        return;
     }
+        link last = getLast(*head);
+        link new = newNodo();
+
+        new->prec = last;
+        last->next = new;
 }
 
 void insIndice(link *head, int n){
@@ -68,6 +75,15 @@ void insIndice(link *head, int n){
         return;
     }
     insIndice(&(*head)->next, n-1);
+}
+
+void creaLista(link *head){
+    int n = 0;
+    printf("Inserire dimensione della lista: ");
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        insCoda(head);
+    }
 }
 
 void elTesta(link *head){
@@ -88,15 +104,6 @@ void elIndice(link *head, int n){
         return;
     }
     elIndice(&(*head)->next, n-1);
-}
-
-void creaLista(link *head){
-    int n = 0;
-    printf("Inserire dimensione della lista: ");
-    scanf("%d", &n);
-    for(int i = 0; i < n; i++){
-        insCoda(head);
-    }
 }
 
 void eliminaListaREC(link head){
@@ -135,12 +142,12 @@ void sceltaM(link *head, int val) {
             printf("Elemento inserito nella lista all'indice %d.\n", indice);
             break;
         case 5:
-            printf("Lista:\n");
-            stampaLista(*head);
+            elTesta(head);
+            printf("Elemento in testa eliminato.\n");
             break;
         case 6:
-            eliminaLista(head);
-            printf("La lista è stata cancellata.\n");
+            elCoda(head);
+            printf("Elemento in coda eliminato.\n");
             break;
         case 7:
             printf("Elimina all'indice: ");
@@ -149,12 +156,12 @@ void sceltaM(link *head, int val) {
             printf("Elemento eliminato nella posizione %d.\n", indice);
             break;
         case 8:
-            elTesta(head);
-            printf("Elemento in testa eliminato");
+            eliminaLista(head);
+            printf("La lista è stata cancellata.\n");
             break;
         case 9:
-            elCoda(head);
-            printf("Elemento in coda eliminato");
+            printf("Lista:\n");
+            stampaLista(*head);
             break;
         case 10:
             printf("Lista al contrario:\n");
@@ -168,7 +175,7 @@ void sceltaM(link *head, int val) {
             break;
     }
 
-    if(val != 5 && val != 6) {
+    if(val != 9 && val != 8) {
         printf("Lista:\n");
         stampaLista(*head);
     }
@@ -177,16 +184,26 @@ void sceltaM(link *head, int val) {
 void menu(link *head){
     int val;
     printf("\n-- Menù delle operazioni --\n");
+
+    printf("\nOperazioni di Creazione:\n");
     printf("1. Crea una lista\n");
+
+    printf("\nOperazioni di Inserimento:\n");
     printf("2. Inserisci in testa alla lista\n");
     printf("3. Inserisci in coda alla lista\n");
     printf("4. Inserisci nel mezzo della lista\n");
-    printf("5. Stampa la lista\n");
-    printf("6. Elimina la lista\n");
+
+    printf("\nOperazioni di Eliminazione:\n");
+    printf("5. Elimina elemento in testa\n");
+    printf("6. Elimina elemento in coda\n");
     printf("7. Elimina un elemento nel mezzo della lista\n");
-    printf("8. Elimina elmento in testa\n");
-    printf("9. Elimina elmento in coda\n");
+    printf("8. Elimina la lista\n");
+
+    printf("\nOperazioni di Stampa:\n");
+    printf("9. Stampa la lista\n");
     printf("10. Stampa la lista al contrario\n");
+
+    printf("\nUscire:\n");
     printf("0. Esci\n");
     printf("---------------------------\n");
     printf("Scelta: ");
@@ -194,7 +211,6 @@ void menu(link *head){
 
     sceltaM(head, val);
 }
-
 //------------------
 
 
