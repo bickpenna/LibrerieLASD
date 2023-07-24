@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int listaCreata = 0;
+
 typedef struct Nodo *link;
 struct Nodo {
     int dato;
@@ -8,7 +10,9 @@ struct Nodo {
     link next;
 };
 
+
 link getLast(link head){
+    if (head == NULL) return NULL;
     if (head->next == NULL) return head;
     else return getLast(head->next);
 }
@@ -124,8 +128,13 @@ void sceltaM(link *head, int val) {
 
     switch(val) {
         case 1:
-            creaLista(head);
-            printf("Lista creata con successo.\n");
+            if (!listaCreata) {
+                creaLista(head);
+                printf("Lista creata con successo.\n");
+                listaCreata = 1;
+            } else {
+                printf("La lista è già stata creata.\n");
+            }
             break;
         case 2:
             insTesta(head);
@@ -183,27 +192,21 @@ void sceltaM(link *head, int val) {
 
 void menu(link *head){
     int val;
+
     printf("\n-- Menù delle operazioni --\n");
 
-    printf("\nOperazioni di Creazione:\n");
-    printf("1. Crea una lista\n");
-
-    printf("\nOperazioni di Inserimento:\n");
+    if (!listaCreata) {
+        printf("1. Crea una lista\n");
+    }
     printf("2. Inserisci in testa alla lista\n");
     printf("3. Inserisci in coda alla lista\n");
     printf("4. Inserisci nel mezzo della lista\n");
-
-    printf("\nOperazioni di Eliminazione:\n");
     printf("5. Elimina elemento in testa\n");
     printf("6. Elimina elemento in coda\n");
     printf("7. Elimina un elemento nel mezzo della lista\n");
     printf("8. Elimina la lista\n");
-
-    printf("\nOperazioni di Stampa:\n");
     printf("9. Stampa la lista\n");
     printf("10. Stampa la lista al contrario\n");
-
-    printf("\nUscire:\n");
     printf("0. Esci\n");
     printf("---------------------------\n");
     printf("Scelta: ");

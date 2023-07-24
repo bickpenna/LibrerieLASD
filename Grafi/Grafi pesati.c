@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int grafoCreato = 0;
+
+typedef struct Edge *link;
 typedef struct Edge{
     int label;
     int peso;
@@ -107,12 +110,75 @@ void stampaGrafo(Grafo graph){
     }
 }
 
+void stampaGrafoRIC(Grafo graph){
+    if(graph.dim == 0) return;
+    graph.dim --;
+    stampaGrafoRIC(graph);
+    if (graph.arr[graph.dim].dis != 1){
+        printf("%d: ", graph.dim);
+        stampaADJ(graph.arr[graph.dim].adj);
+    }
+}
+
+void sceltaGrafo(Grafo *graph, int val) {
+    switch(val) {
+        case 1:
+            if (!grafoCreato) {
+                creaGrafo(graph);
+                printf("Grafo creato con successo.\n");
+                grafoCreato = 1;
+            } else {
+                printf("Grafo già creato.\n");
+            }
+            break;
+        case 2:
+            creaArchi(*graph);
+            printf("Archi inseriti con successo.\n");
+            break;
+        case 3:
+            disNod(*graph);
+            printf("Nodo disabilitato.\n");
+            break;
+        case 4:
+            stampaGrafo(*graph);
+            break;
+        case 5:
+            stampaGrafoRIC(*graph);
+            break;
+        case 0:
+            printf("Uscita dal programma.\n");
+            exit(0);
+            break;
+        default:
+            printf("Scelta non valida.\n");
+            break;
+    }
+}
+
+void menuGrafo(Grafo *graph) {
+    int val;
+
+    printf("\n-- Menù delle operazioni sul Grafo --\n");
+
+    if (!grafoCreato) {
+        printf("1. Crea un grafo\n");
+    }
+    printf("2. Inserisci archi nel grafo\n");
+    printf("3. Disabilita un nodo\n");
+    printf("4. Stampa il grafo\n");
+    printf("5. Stampa il grafo (versione ricorsiva)\n");
+    printf("0. Esci\n");
+
+    printf("-------------------------------\n");
+    printf("Scelta: ");
+    scanf("%d", &val);
+
+    sceltaGrafo(graph, val);
+}
+
+
 int main(){
     Grafo graph;
 
-    creaGrafo(&graph);
-    creaArchi(graph);
-    stampaGrafo(graph);
-    disNod(graph);
-    stampaGrafo(graph);
+    while(1) menuGrafo(&graph);
 }
