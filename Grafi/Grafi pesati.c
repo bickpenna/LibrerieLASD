@@ -10,12 +10,10 @@ typedef struct Edge{
     int *dis;
     struct Edge *next;
 } Edge;
-
 typedef struct Nodo{
     int dis;
     Edge *adj;
 } Nodo;
-
 typedef struct Grafo{
     int dim;
     Nodo *arr;
@@ -26,6 +24,12 @@ void errore(int i){
     if (i == 2) printf("Errore, nodo non fa parte del grafo\n");
     if (i == 3) printf("Errore generico\n");
     exit(1);
+}
+
+Edge *getLast(Edge *edge){
+    if(edge == NULL) return NULL;
+    if(edge->next == NULL) return edge;
+    else return getLast(edge->next);
 }
 
 void creaGrafo(Grafo *graph){
@@ -49,12 +53,6 @@ void definisciArco(Edge **edge, int nodo2, int peso, int *dis){
     (*edge)->peso = peso;
     (*edge)->dis = dis;
     (*edge)->next = NULL;
-}
-
-Edge *getLast(Edge *edge){
-    if(edge == NULL) return NULL;
-    if(edge->next == NULL) return edge;
-    else return getLast(edge->next);
 }
 
 void creaArco(Grafo graph){
@@ -83,7 +81,43 @@ void creaArchi(Grafo graph){
     }
 }
 
-void disNod(Grafo graph){
+void elTesta(link *head){
+    link tmp = *head;
+    *head = (*head)->next;
+    free(tmp);
+}
+
+void elArcoDIS(link *head) {
+    if(!head || !*head) return;
+    if (*(*head)->dis == 1) {
+        elTesta(head);
+        elArcoDIS(head);
+    }
+    else elArcoDIS(&(*head)->next);
+}
+
+void eliminaListaREC(link head){
+    if (head == NULL) return;
+    eliminaListaREC(head->next);
+    free(head);
+    head = NULL;
+}
+
+void eliminaArchiDIS(Grafo graph){
+    for(int i = 0; i < graph.dim; i++){
+        if (graph.arr[i].dis == 1) eliminaListaREC(graph.arr[i].adj);
+        else elArcoDIS(&graph.arr[i].adj);
+    }
+}
+
+void attNodo(Grafo graph){
+    int i;
+    printf("Nodo da attivare: ");
+    scanf("%d", &i);
+    graph.arr[i].dis = 0;
+}
+
+void disNodo(Grafo graph){
     int i;
     printf("Nodo da disabilitare: ");
     scanf("%d", &i);
@@ -120,7 +154,7 @@ void stampaGrafoRIC(Grafo graph){
     }
 }
 
-void sceltaGrafo(Grafo *graph, int val) {
+void sceltaMenuGrafo(Grafo *graph, int val) {
     switch(val) {
         case 1:
             if (!grafoCreato) {
@@ -136,14 +170,27 @@ void sceltaGrafo(Grafo *graph, int val) {
             printf("Archi inseriti con successo.\n");
             break;
         case 3:
-            disNod(*graph);
+            disNodo(*graph);
             printf("Nodo disabilitato.\n");
             break;
         case 4:
-            stampaGrafo(*graph);
+            attNodo(*graph);
+            printf("Nodo attivato.\n");
             break;
         case 5:
+            printf("Archi eliminati.\n");
+            eliminaArchiDIS(*graph);
+            break;
+        case 6:
+            stampaGrafo(*graph);
+            break;
+        case 7:
             stampaGrafoRIC(*graph);
+            break;
+        case 8:
+            //eliminaGrafo(graph);
+            grafoCreato = 0;
+            printf("Grafo eliminato.\n");
             break;
         case 0:
             printf("Uscita dal programma.\n");
@@ -165,15 +212,18 @@ void menuGrafo(Grafo *graph) {
     }
     printf("2. Inserisci archi nel grafo\n");
     printf("3. Disabilita un nodo\n");
-    printf("4. Stampa il grafo\n");
-    printf("5. Stampa il grafo (versione ricorsiva)\n");
+    printf("4. Attiva un nodo\n");
+    printf("5. Elimina archi non attivi\n");
+    printf("6. Stampa il grafo\n");
+    printf("7. Stampa il grafo (versione ricorsiva)\n");
+    printf("8. Elimina il grafo\n");
     printf("0. Esci\n");
 
     printf("-------------------------------\n");
     printf("Scelta: ");
     scanf("%d", &val);
 
-    sceltaGrafo(graph, val);
+    sceltaMenuGrafo(graph, val);
 }
 
 
