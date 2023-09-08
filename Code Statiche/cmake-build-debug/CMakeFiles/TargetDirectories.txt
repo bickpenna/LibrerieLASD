@@ -1,0 +1,3 @@
+/Users/bickpenna/_GitHub/LibrerieLASD/Code Statiche/cmake-build-debug/CMakeFiles/Code_Statiche.dir
+/Users/bickpenna/_GitHub/LibrerieLASD/Code Statiche/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/bickpenna/_GitHub/LibrerieLASD/Code Statiche/cmake-build-debug/CMakeFiles/rebuild_cache.dir
