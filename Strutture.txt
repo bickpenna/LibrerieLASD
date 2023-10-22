@@ -1,19 +1,19 @@
-Grafi Liste di Adiacenza
-        Algoritmo di Dijkstra
-
-Stack
-	Dinamici
-	Statici
+Alberi
+	ABR
+	Heap
 
 Code
 	Dinamiche
 	Statiche
 
-Alberi
-	ABR
-	Heap
+Grafi Liste di Adiacenza
+        Algoritmo di Dijkstra
 
 Liste
 	Liste
 	Double Linked
 	Circolari
+
+Stack
+	Dinamici
+	Statici
