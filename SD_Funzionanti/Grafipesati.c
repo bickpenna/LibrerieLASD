@@ -19,6 +19,26 @@ typedef struct Grafo{
     Nodo *arr;
 } Grafo;
 
+//Funzioni
+void errore(int i);
+Edge *getLast(Edge *edge);
+void creaGrafo(Grafo *graph);
+void definisciArco(Edge **edge, int nodo2, int peso, int *dis);
+void creaArco(Grafo graph);
+void creaArchi(Grafo graph);
+void elTesta(link *head);
+void elArcoDIS(link *head);
+void eliminaListaREC(link head);
+void eliminaArchiDIS(Grafo graph);
+void attNodo(Grafo graph);
+void disNodo(Grafo graph);
+void stampaADJ(Edge *head);
+void stampaGrafo(Grafo graph);
+void stampaGrafoRIC(Grafo graph);
+void sceltaMenuGrafo(Grafo *graph, int val);
+void menuGrafo(Grafo *graph);
+
+
 void errore(int i){
     if (i == 1) printf("Errore di Allocazione. \n");
     if (i == 2) printf("Errore, nodo non fa parte del grafo\n");
@@ -153,6 +173,43 @@ void stampaGrafoRIC(Grafo graph){
         stampaADJ(graph.arr[graph.dim].adj);
     }
 }
+
+int eSottografo(Grafo G, Grafo G_prime) {
+    // Controllo preliminare sulla dimensione dei grafi
+    if (G_prime.dim > G.dim) {
+        return 0; // Falso
+    }
+
+    for (int i = 0; i < G_prime.dim; i++) {
+        Nodo nodo_prime = G_prime.arr[i];
+        
+        if (nodo_prime.dis == 1) continue; // Ignora nodi disabilitati
+
+        // Trova il nodo corrispondente in G
+        if (i >= G.dim || G.arr[i].dis == 1) {
+            return 0; // Nodo non esistente o disabilitato in G
+        }
+
+        Nodo nodo = G.arr[i];
+
+        // Verifica gli archi per ogni nodo
+        for (Edge *e_prime = nodo_prime.adj; e_prime != NULL; e_prime = e_prime->next) {
+            int trovato = 0;
+            for (Edge *e = nodo.adj; e != NULL; e = e->next) {
+                if (e_prime->label == e->label && e_prime->peso == e->peso) {
+                    trovato = 1;
+                    break;
+                }
+            }
+            if (!trovato) {
+                return 0; // Arco non trovato
+            }
+        }
+    }
+
+    return 1; // Vero, G' è un sottografo di G
+}
+
 
 void sceltaMenuGrafo(Grafo *graph, int val) {
     switch(val) {

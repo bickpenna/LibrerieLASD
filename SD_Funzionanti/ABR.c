@@ -8,6 +8,16 @@ typedef struct Nodo{
     link dx;
 }Nodo;
 
+//Funzioni
+link newNodo();
+void insert(link *root, int value);
+link search(link root, int value);
+void delete(link *root, int value);
+void inorder(link root);
+void freeTree(link root);
+void menu(link *root);
+
+
 link newNodo(){
     link new = (link) malloc(sizeof(struct Nodo));
     if(!new) exit(EXIT_FAILURE);

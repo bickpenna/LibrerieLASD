@@ -3,6 +3,27 @@
 
 typedef int *link;
 
+//Funzioni
+int isFull(link stack, int dim);
+int isEmpty(link stack);
+int defStack(link *stack);
+void push(link stack, int dim, int value);
+int pop(link stack);
+int top(link stack);
+void displayStack(link stack, int dim);
+void sceltaMenu(int val, link *stack, int dim);
+void menuStack(link *stack, int dim);
+
+int isEmpty(link stack){
+    if (stack[0] == 1) return 1;
+    else return 0;
+}
+
+int isFull(link stack, int dim){
+    if (stack[0] > dim) return 1;
+    else return 0;
+}
+
 int defStack(link *stack){
     int dim;
     printf("Definisci la dimensione dello stack: ");
@@ -13,16 +34,6 @@ int defStack(link *stack){
 
     (*stack)[0]=1;
     return dim;
-}
-
-int isEmpty(link stack){
-    if (stack[0] == 1) return 1;
-    else return 0;
-}
-
-int isFull(link stack, int dim){
-    if (stack[0] == dim) return 1;
-    else return 0;
 }
 
 void push(link stack, int dim, int value) {
@@ -40,7 +51,7 @@ int pop(link stack){
         return -1;
     }
     else {
-        elemento = stack[stack[0]];
+        elemento = stack[stack[0]-1];
         stack[0]--;
         return elemento;
     }
@@ -55,16 +66,15 @@ int top(link stack) {
     }
 }
 
-void displayStack(link stack) {
-    if(isEmpty(stack)) {
-        printf("Lo stack è vuoto!!");
-        return;
+void displayStack(link stack, int dim) {
+    int dato;
+    if(isEmpty(stack)) return;
+    else {
+        dato = pop(stack);
+        printf("%d\n", dato);
+        displayStack(stack, dim);
+        push(stack, dim, dato);
     }
-    printf("Elementi nello stack: ");
-    for(int i=1; i<stack[0]; i++) {
-        printf("%d ", stack[i]);
-    }
-    printf("\n");
 }
 
 void sceltaMenu(int val, link *stack, int dim) {
@@ -73,21 +83,21 @@ void sceltaMenu(int val, link *stack, int dim) {
         case 1:
             printf("Inserisci l'elemento da aggiungere nello Stack: ");
             scanf("%d", &value);
-            push(stack, dim, value);
+            push(*stack, dim, value);
             break;
         case 2:
-            value = pop(stack);
+            value = pop(*stack);
             if(value != -1) printf("Elemento %d eliminato dallo stack", value);
             break;
         case 3:
-            printf("Elemento in cima allo stack: %d\n", top(stack));
+            printf("Elemento in cima allo stack: %d\n", top(*stack));
             break;
         case 4:
-            if (isEmpty(stack)) printf("Lo stack è vuoto.\n");
+            if (isEmpty(*stack)) printf("Lo stack è vuoto.\n");
             else printf("Lo stack non è vuoto.\n");
             break;
         case 5:
-            displayStack(stack);
+            displayStack(*stack, dim); 
             break;
         case 0:
             exit(0);
@@ -97,6 +107,7 @@ void sceltaMenu(int val, link *stack, int dim) {
             break;
     }
 }
+
 
 void menuStack(link *stack, int dim) {
     int val;

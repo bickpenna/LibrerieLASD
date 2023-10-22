@@ -2,24 +2,36 @@
 #include <stdlib.h>
 #define MAX 5
 
+//Funzioni
+void errore(int e);
+int empty(int *coda);
+int full(int *coda);
+
+void defCoda(int *coda);
+void enqueue(int *coda, int e);
+int dequeue(int *coda);
+void stampa(int *coda);
+
+void stampaMenu();
+void menu(int *coda);
+
+
 void errore(int e){
     if (e == 1) printf("Coda piena, nessun inserimento");
     if (e == 2) printf("Coda vuota, nessun elemento rimosso");
 }
 
-void defCoda(int *coda){
-    coda[0] = 0; //TESTA
-    coda[MAX+1] = coda[0] + 1; //CODA
-}
-
 int empty(int *coda){
-    if (coda[0] == coda[MAX +1]) return 1;
-    else return 0;
+    return coda[0] == 0;
 }
 
 int full(int *coda){
-    if ((coda[MAX+1] + 1) % MAX == coda[0]) return 1;
-    else return 0;
+    return coda[0] == coda[MAX + 1];
+}
+
+void defCoda(int *coda){
+    coda[0] = 0; //TESTA
+    coda[MAX+1] = 1; //CODA
 }
 
 void enqueue(int *coda, int e){
@@ -39,15 +51,21 @@ int dequeue(int *coda){
     return -1;
 }
 
-void stampa(int *coda){
+void stampa(int *coda) {
     int e;
-    if(!empty(coda)){
+    if (empty(coda)) {
+        printf("Coda vuota!\n");
+        return;
+    } else {
         e = dequeue(coda);
-        printf("%d, ", e);
-        stampa(coda);
-        enqueue(coda, e);
+        if (e != -1) {
+            printf("%d ", e);
+            stampa(coda);
+            enqueue(coda, e);
+        }
     }
 }
+
 
 void stampaMenu() {
     printf("\n--- MENU ---\n");
