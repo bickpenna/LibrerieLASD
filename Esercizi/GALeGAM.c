@@ -26,6 +26,13 @@ typedef struct GrafoAM{
 }GrafoAM;
 
 // Grafo Lista di Adiacenza
+
+void elTesta(link *head){
+    link tmp = *head;
+    *head = (*head)->next;
+    free(tmp);
+}
+
 void creaGrafoAL(Grafo *graph, int dim){
     int i;
     graph->dim = dim;
@@ -78,7 +85,7 @@ void creaArcoGAL(Grafo graph, int src, int dest, int peso){
     }
 }
 
-void disNodoGAL(Grafo graph, int nodo){
+void disabilitaNodoGAL(Grafo graph, int nodo){
     graph.arr[nodo].dis = 1;
 }
 
@@ -155,7 +162,7 @@ void stampaGrafoAM(GrafoAM graph){
     }
 }
 
-// Esercizio
+// 1) Esercizio Grafo Archi Comuni
 void creaGrafoComune(GrafoAM *graph3, Grafo graphL, GrafoAM graphM){
     if(graphL.dim <= graphM.dim)
         creaGrafoAM(graph3, graphL.dim);
@@ -175,22 +182,65 @@ void creaGrafoComune(GrafoAM *graph3, Grafo graphL, GrafoAM graphM){
     }    
 }
 
+// 2) Esercizio Grafo1 - Grafo 2
+void verificaEsottraiPeso(link *head1, link head2){
+    if (head1 == NULL) return;
+    if (head2 == NULL) return;
+
+    if ((*head1)->dest == head2->dest){
+        (*head1)->peso = (*head1)->peso - head2->peso;
+        if((*head1)->peso <= 0) elTesta(head1); 
+    }
+    verificaEsottraiPeso(head1, head2->next);
+}
+
+void sottraiADJ(link *head1, link head2){
+    if (head1 == NULL) return;
+    if (head2 == NULL) return;
+
+    if ((*head1) == NULL) return;
+    sottraiADJ(&(*head1)->next, head2);
+    verificaEsottraiPeso(head1, head2);
+}
+
+void sottraiGrafi(Grafo graph1, Grafo graph2){
+    int src;
+    for(src = 0; src < graph1.dim; src ++)
+        sottraiADJ(&graph1.arr[src].adj, graph2.arr[src].adj);
+}
+
 int main(){
-    int dim = 4;
     
-    Grafo graphL;
-    creaGrafoAL(&graphL, dim);
+    //Grafo Lista di Adiacenza 1
+    Grafo graphL1;
+    int dimL1 = 4;
+    creaGrafoAL(&graphL1, dimL1);
 
-    creaArcoGAL(graphL, 0, 1, 1);
-    creaArcoGAL(graphL, 1, 2, 1);
-    creaArcoGAL(graphL, 1, 3, 1);
-    creaArcoGAL(graphL, 2, 3, 1);
+    creaArcoGAL(graphL1, 0, 1, 5);
+    creaArcoGAL(graphL1, 1, 2, 5);
+    creaArcoGAL(graphL1, 1, 3, 5);
+    creaArcoGAL(graphL1, 2, 3, 5);
 
-    printf("Grafo AL: \n");
-    stampaGrafoAL(graphL);
+    printf("\nGrafo AL1: \n");
+    stampaGrafoAL(graphL1);
 
+    //Grafo Lista di Adiacenza 2
+    Grafo graphL2;
+    int dimL2 = 5;
+    creaGrafoAL(&graphL2, dimL2);
+
+    creaArcoGAL(graphL2, 0, 1, 6);
+    creaArcoGAL(graphL2, 1, 2, 1);
+    creaArcoGAL(graphL2, 1, 3, 5);
+    creaArcoGAL(graphL2, 2, 3, 1);
+
+    printf("\nGrafo AL2: \n");
+    stampaGrafoAL(graphL2);
+
+    //Grafo Matrice di Adiacenza
     GrafoAM graphM;
-    creaGrafoAM(&graphM, dim);
+    int dimM = 5;
+    creaGrafoAM(&graphM, dimM);
 
     creaArcoGAM(graphM, 0, 1, 1);
     creaArcoGAM(graphM, 1, 2, 1);
@@ -200,10 +250,19 @@ int main(){
     printf("\nGrafo AM: \n");
     stampaGrafoAM(graphM);
 
-    GrafoAM graph3;
-    creaGrafoComune(&graph3, graphL, graphM);
+    //1) Esercizio Grafo Elementi Comuni
+    GrafoAM graphEC;
+    creaGrafoComune(&graphEC, graphL1, graphM);
 
-    printf("\nGrafo 3: \n");
-    stampaGrafoAM(graph3);
+    printf("\nGrafo con Elementi Comuni: \n");
+    stampaGrafoAM(graphEC);
 
+    //2) Grafo 1 - Grafo 2
+    sottraiGrafi(graphL1, graphL2);
+
+    printf("\nGrafo 1 - Grafo 2: \n");
+    stampaGrafoAL(graphL1);
+
+    
+    
 }

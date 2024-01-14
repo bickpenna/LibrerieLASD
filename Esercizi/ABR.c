@@ -77,17 +77,17 @@ void printInOrder(link root){
 }
 
 int main(){
+    // ABR 1
     link root = NULL;
-    int i;
     int dim = 5;
     srand(10);
 
-    for(i = 0; i<dim; i++)
+    for(int i = 0; i<dim; i++)
         insertABR(&root, rand()%100);
     printInOrder(root);
 
-    i = 70;
-    delNodo(&root, i);
-    printf("\nSenza 70: ");
+    int del = 70;
+    delNodo(&root, del);
+    printf("\nSenza %d: ", del);
     printInOrder(root);
 }
