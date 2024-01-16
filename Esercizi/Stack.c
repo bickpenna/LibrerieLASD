@@ -78,14 +78,12 @@ void raddoppiaOccorrenze(link stack, int dim){
     push(stack, dim, dato);
 }
 
-
-
 int main(){
     // Stack 1
     link stack1;
     int dim1 = 6; 
     
-    defStack(&stack1, dim1);
+    defStack(&stack1, dim1+1);
     for(int i=0; i<dim1; i++) push(stack1, dim1, i);
 
     printf("Stack 1:\n");
