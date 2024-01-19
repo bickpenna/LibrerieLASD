@@ -2,32 +2,32 @@
 #include <stdlib.h>
 #define MAX 10
 
-typedef int *link;
 
 // Funzioni Coda
-void defEmptyQueue(link queue){
+void defEmptyQueue(int queue[]){
     queue[0] = 0;
     queue[MAX] = 1;
 }
 
-int isEmpty(link queue){
-    if(queue[0] == 0) return 1;
-    return 0;
+int isEmpty(int queue[]){
+    return queue[0] == 0;
 }
 
-int isFull(link queue){
-    if(queue[0] == queue[MAX+1]) return 1;
-    return 0;
+int isFull(int queue[]){
+    return ((queue[MAX+1] % MAX) + 1) == queue[0];
 }
 
-void enqueue(link queue, int dato){
-    queue[queue[MAX+1]] = dato;
-
-    queue[MAX+1] = (queue[MAX+1] % MAX) + 1;
-    if(queue[0] == 0) queue[0] = 1;
+void enqueue(int queue[], int dato){
+    if (!isFull(queue)) {
+        queue[queue[MAX+1]] = dato;
+        queue[MAX+1] = (queue[MAX+1] % MAX) + 1;
+        
+        if (queue[0] == 0) queue[0] = 1;
+    }
 }
 
-int dequeue(link queue){
+
+int dequeue(int queue[]){
     int dato = queue[queue[0]];
 
     queue[0] = (queue[0] % MAX) + 1;
@@ -37,7 +37,7 @@ int dequeue(link queue){
     return dato;
 }
 
-void printQueue(link queue){
+void printQueue(int queue[]){
     int dato;
     if(!isEmpty(queue)){
         dato = dequeue(queue);
@@ -47,7 +47,7 @@ void printQueue(link queue){
     }
 }
 
-void reverse(link queue){
+void reverse(int queue[]){
     int dato;
     if(!isEmpty(queue)){
         dato = dequeue(queue);
@@ -57,7 +57,7 @@ void reverse(link queue){
 }
 
 // 1) Elimina Dispari
-void eliminaDispari(link queue){
+void eliminaDispari(int queue[]){
     int tmp[MAX+2];
     int dato;
     defEmptyQueue(tmp);
@@ -67,9 +67,10 @@ void eliminaDispari(link queue){
         if(dato % 2 == 0) enqueue(tmp, dato);
     }
 
-    while(!isEmpty(queue))
+    while(!isEmpty(queue)){
         dato = dequeue(tmp);
         enqueue(queue, dato);
+    }
 }
 
 int main(){
