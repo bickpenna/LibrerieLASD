@@ -14,25 +14,25 @@ int isEmpty(int queue[]){
 }
 
 int isFull(int queue[]){
-    return (queue[MAX+1] % MAX + 1) == queue[0];
+    return queue[MAX+1] == queue[0];
 }
 
 void enqueue(int queue[], int dato){
-    if (!isFull(queue)) {
-        queue[queue[MAX+1]] = dato;
-        queue[MAX+1] = (queue[MAX+1] % MAX) + 1;
-        
-        if (queue[0] == 0) queue[0] = 1;
-    }
+    queue[queue[MAX+1]] = dato;
+
+    if(queue[0] == 0) queue[0] = 1;
+    queue[MAX+1] = (queue[MAX+1] % MAX) + 1;    
 }
 
 int dequeue(int queue[]){
-    int dato;
-    dato = queue[queue[0]];
+    int dato = queue[queue[0]];
 
     queue[0] = (queue[0] % MAX) + 1;
-    if(queue[0] == queue[MAX+1])
-        defEmptyQueue(queue);
+
+    if(queue[0] == queue[MAX+1]){
+        queue[0] = 0;
+        queue[MAX+1] = 1;
+    }
     
     return dato;
 }

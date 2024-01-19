@@ -1,3 +1,5 @@
+#define MAX 10
+
 int empty_queue(int Q[])
 {
     return Q[0]==0;
