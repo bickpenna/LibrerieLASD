@@ -75,8 +75,12 @@ int main(){
     printf("\nCoda: ");
     printQueue(queue1);
 
+    reverse(queue1);
+    printf("\nCoda: ");
+    printQueue(queue1);
+
     // 1) Elimina Dispari
-    //eliminaDispari(queue1);
-    //printf("\nCoda senza dispari: ");
-    //printQueue(queue1);
+    eliminaDispari(queue1);
+    printf("\nCoda senza dispari: ");
+    printQueue(queue1);
 }
