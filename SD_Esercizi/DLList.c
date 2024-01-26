@@ -63,7 +63,7 @@ void stampaLista(link head){
     stampaLista(head->next);
 }
 
-// 1) Esercizio Lista con Elementi dispari da due liste
+// 1) Esercizio Lista con Elementi dispari da due liste 
 void insOdd(link *headO, link headI){
     if (headI == NULL) return;
     if (headI->dato % 2 == 0) insCoda(headO, headI->dato);

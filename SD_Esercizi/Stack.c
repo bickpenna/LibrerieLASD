@@ -1,27 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef int *link;
+typedef int *Stack;
 
 // Stack
-int isEmpty(link stack){
+int isEmpty(Stack stack){
     if (stack[0] == 1) return 1;
     return 0;
 }
 
-int isFull(link stack, int dim){
+int isFull(Stack stack, int dim){
     if (stack[0]> dim) return 1;
     return 0;
 }
 
-void defStack(link *stack, int dim){
+void defStack(Stack *stack, int dim){
     *stack = (int*) calloc(dim+1, sizeof(int));
     if (stack == NULL) exit(EXIT_FAILURE);
     
     (*stack)[0]=1;
 }
 
-void push(link stack, int dim, int dato){
+void push(Stack stack, int dim, int dato){
     if(isFull(stack, dim)) printf("Lo stack è pieno, elemento non inserito\n");
     else{
         stack[stack[0]] = dato;
@@ -29,7 +29,7 @@ void push(link stack, int dim, int dato){
     }
 }
 
-int pop(link stack){
+int pop(Stack stack){
     int elemento;
     if(!isEmpty(stack)){
         elemento = stack[stack[0]-1];
@@ -41,7 +41,7 @@ int pop(link stack){
     return -1;
 }
 
-void printStack(link stack, int dim){
+void printStack(Stack stack, int dim){
     int dato;
     if(isEmpty(stack)) return;
     
@@ -52,7 +52,7 @@ void printStack(link stack, int dim){
 }
 
 // 1) Crea un terzo stack con gli elementi pari dei due precedenti
-void pushHeaven(link stackH, int dimH, link stackI, int dimI){
+void pushHeaven(Stack stackH, int dimH, Stack stackI, int dimI){
     int dato;
     if(isEmpty(stackI)) return;
 
@@ -62,13 +62,13 @@ void pushHeaven(link stackH, int dimH, link stackI, int dimI){
     push(stackI, dimI, dato);
 }
 
-void pushHeavenFrom2Stack(link stackH, int dimH, link stack1, int dim1, link stack2, int dim2){
+void pushHeavenFrom2Stack(Stack stackH, int dimH, Stack stack1, int dim1, Stack stack2, int dim2){
     pushHeaven(stackH, dimH, stack1, dim1);
     pushHeaven(stackH, dimH, stack2, dim2);
 }
 
 // 2) Raddoppia Occorrenze di uno stack
-void raddoppiaOccorrenze(link stack, int dim){
+void raddoppiaOccorrenze(Stack stack, int dim){
     int dato;
     if(isEmpty(stack)) return;
 
@@ -80,7 +80,7 @@ void raddoppiaOccorrenze(link stack, int dim){
 
 int main(){
     // Stack 1
-    link stack1;
+    Stack stack1;
     int dim1 = 6; 
     
     defStack(&stack1, dim1+1);
@@ -90,7 +90,7 @@ int main(){
     printStack(stack1, dim1);
 
     // Stack 2
-    link stack2;
+    Stack stack2;
     int dim2 = 5;
     
     defStack(&stack2, dim2);
@@ -101,7 +101,7 @@ int main(){
 
 
     // 1) Stack Pari
-    link stackHeaven;
+    Stack stackHeaven;
     int dimHeaven = dim1+dim2;
 
     defStack(&stackHeaven, dimHeaven);
@@ -111,7 +111,7 @@ int main(){
     printStack(stackHeaven, dimHeaven);
 
     //2) Raddoppia Occorrenze Stack (lo stack deve essere grande il doppio)
-    link stackRaddoppiato;
+    Stack stackRaddoppiato;
     int dimRaddoppiato = 10;
 
     defStack(&stackRaddoppiato, dimRaddoppiato);

@@ -1,30 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef int *link;
+typedef int *Stack;
 
 //Funzioni
-int isFull(link stack, int dim);
-int isEmpty(link stack);
-int defStack(link *stack);
-void push(link stack, int dim, int value);
-int pop(link stack);
-int top(link stack);
-void displayStack(link stack, int dim);
-void sceltaMenu(int val, link *stack, int dim);
-void menuStack(link *stack, int dim);
+int isFull(Stack stack, int dim);
+int isEmpty(Stack stack);
+int defStack(Stack *stack);
+void push(Stack stack, int dim, int value);
+int pop(Stack stack);
+int top(Stack stack);
+void displayStack(Stack stack, int dim);
+void sceltaMenu(int val, Stack *stack, int dim);
+void menuStack(Stack *stack, int dim);
 
-int isEmpty(link stack){
+int isEmpty(Stack stack){
     if (stack[0] == 1) return 1;
     else return 0;
 }
 
-int isFull(link stack, int dim){
+int isFull(Stack stack, int dim){
     if (stack[0] > dim) return 1;
     else return 0;
 }
 
-int defStack(link *stack){
+int defStack(Stack *stack){
     int dim;
     printf("Definisci la dimensione dello stack: ");
     scanf("%d", &dim);
@@ -36,7 +36,7 @@ int defStack(link *stack){
     return dim;
 }
 
-void push(link stack, int dim, int value) {
+void push(Stack stack, int dim, int value) {
     if(isFull(stack, dim)) printf("Lo stack è pieno!! Elemento non inserito.");
     else{
         stack[stack[0]] = value;
@@ -44,7 +44,7 @@ void push(link stack, int dim, int value) {
     }
 }
 
-int pop(link stack){
+int pop(Stack stack){
     int elemento;
     if(isEmpty(stack)) {
         printf("Lo stack è vuoto!!");
@@ -57,7 +57,7 @@ int pop(link stack){
     }
 }
 
-int top(link stack) {
+int top(Stack stack) {
     if (isEmpty(stack)) {
         printf("Lo stack è vuoto!!");
         return -1;
@@ -66,7 +66,7 @@ int top(link stack) {
     }
 }
 
-void displayStack(link stack, int dim) {
+void displayStack(Stack stack, int dim) {
     int dato;
     if(isEmpty(stack)) return;
     else {
@@ -77,7 +77,7 @@ void displayStack(link stack, int dim) {
     }
 }
 
-void sceltaMenu(int val, link *stack, int dim) {
+void sceltaMenu(int val, Stack *stack, int dim) {
     int value;
     switch(val) {
         case 1:
@@ -109,7 +109,7 @@ void sceltaMenu(int val, link *stack, int dim) {
 }
 
 
-void menuStack(link *stack, int dim) {
+void menuStack(Stack *stack, int dim) {
     int val;
     printf("\n-- Menù Operazioni Stack --\n");
 
@@ -134,7 +134,7 @@ void menuStack(link *stack, int dim) {
 }
 
 int main() {
-    link stack;
+    Stack stack;
     int dim = defStack(&stack);
 
     while(1) menuStack(&stack, dim);
