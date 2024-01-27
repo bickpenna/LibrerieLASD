@@ -239,12 +239,12 @@ void menu(Grafo *graph1, GrafoAM *graph2){
             stampaGrafoAM(*graph2);
             break;
         case 3:
-            printf("Inserisci origine, destinazione e peso dell'arco: ");
+            printf("Inserisci origine, destinazione e peso dell'arco (ES: 0 1 5): ");
             scanf("%d %d %d", &src, &dest, &peso);
             creaArcoGAL(*graph1, src, dest, peso);
             break;
         case 4:
-            printf("Inserisci origine, destinazione e peso dell'arco: ");
+            printf("Inserisci origine, destinazione e peso dell'arco (ES: 0 1 5): ");
             scanf("%d %d %d", &src, &dest, &peso);
             creaArcoGAM(*graph2, src, dest, peso);
             break;
