@@ -1,7 +1,10 @@
 # 📚 Librerie LASD
-## ⌨️ *Informazioni Utili*
-- Le librerie sono scritte in C, tutte presentano un piccolo main di prova per testarle.
-- Scritte per il corso di LASD di Murano
+
+## 💾 *Cosa C'è*
+- Librerie in C delle principali strutture dati
+- Esercizi Svolti (Nelle librerie)
+- Tracce di esami
+- Soluzione Esame Gennaio 2023
 
 ## ©️ *Create da*
 - 🧑🏻‍💻  [Mario Penna](https://github.com/bickpenna/)
